@@ -1,41 +1,47 @@
 'use strict';
 
-var accessory = 7;
-var taxRate = .8;
-var phonePrice = 32;
-var account = 150;
-var phonesPurchased = 0;
-var accessoryPurchased = 0;
-var total = 0;
+function totalPrice() {
+	var threshold = 25;
+	var accessoryPrice = 7;
+	var phonePrice = 32;
+	var account = 150;
+	var phonesPurchased = 0;
+	var accessoryPurchased = 0;
+	var addedBill = 0;
+	
 
-var totalPrice = function( total, phonePrice, accessory, account ) {
-
-	var tax = function(total) {
-		var taxRate = .08;
-		var totalWithTax = total + total * taxRate;
-		return totalWithTax;
-		console.log(totalWithTax);
+	var tax = function(addedBill) {
+		return addedBill + addedBill * .09;
 	}
 
-	while ( account >= tax(phonePrice) ) {
+	while ( account >= (tax(phonePrice) + threshold )) {
 		phonesPurchased ++;
-		total += tax(phonePrice);
+		addedBill += tax(phonePrice);
 		account -= tax(phonePrice); 
 	}
 
-	while ( account >= tax(accessory) ) {
+	var totalPhonePrice =  phonesPurchased * phonePrice;
+	console.log(phonesPurchased + " phones " + priceInDollars(totalPhonePrice));
+
+	while ( account >= (tax(accessoryPrice) + threshold )) {
 		accessoryPurchased ++;
-		total += tax(accessory);
-		account -= tax(accessory);
+		addedBill += tax(accessoryPrice);
+		account -= tax(accessoryPrice);
+	}
+	function totalAccessoryPrice() {
+		var totalAccessory = accessoryPurchased * accessoryPrice;
+		return tax(totalAccessory);
+	} 
+	console.log(accessoryPurchased + " accessory " + priceInDollars(totalAccessoryPrice()));
+
+	function priceInDollars(number) {
+		return "$" + number.toFixed(2);
 	}
 
-	var priceInDollars = function(total) {
-		var dollars = "$" + total.toFixed(2);
-		return dollars;
-	}
-
-	console.log(total);
-	return priceInDollars(total);
+	console.log('Money left in account: ' + priceInDollars(account))
+	return priceInDollars(addedBill);
 }
-	console.log(totalPrice(total, phonePrice, accessory, account));
+
+console.log('Total money spent: ' + totalPrice());
+
 
