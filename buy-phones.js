@@ -1,6 +1,6 @@
 'use strict';
 
-function totalPrice() {
+var totalPrice = function() {
 	var threshold = 25;
 	var accessoryPrice = 7;
 	var phonePrice = 32;
